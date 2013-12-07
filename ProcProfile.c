@@ -1,4 +1,7 @@
-/* Written in 2013 by David Catt; placed into public domain */
+/*  ProcProfile 1.0 - A Command Line Process Profiling Tool For Windows
+    Written in 2013 by David Catt
+    Modified by Bulat Ziganshin
+    Placed into public domain */
 
 /* #define BYTECNT */
 #define STDPTIME
@@ -24,7 +27,9 @@ BOOL WINAPI breakHdl(DWORD dwCtrlType) {
 #else
 	TerminateProcess(pi.hProcess, 1);
 #endif
+        return TRUE;
 }
+
 int main() {
 	/* Declare variables */
 	LPTSTR cl,cm;
@@ -90,11 +95,11 @@ int main() {
 		ctv = bt;
 		etv = ft;
 #else
-		ctv = ct.dwLowDateTime | (ct.dwHighDateTime << 32);
-		etv = et.dwLowDateTime | (et.dwHighDateTime << 32);
+		ctv = ct.dwLowDateTime | ((ULONGLONG)ct.dwHighDateTime << 32);
+		etv = et.dwLowDateTime | ((ULONGLONG)et.dwHighDateTime << 32);
 #endif
-		ktv = kt.dwLowDateTime | (kt.dwHighDateTime << 32);
-		utv = ut.dwLowDateTime | (ut.dwHighDateTime << 32);
+		ktv = kt.dwLowDateTime | ((ULONGLONG)kt.dwHighDateTime << 32);
+		utv = ut.dwLowDateTime | ((ULONGLONG)ut.dwHighDateTime << 32);
 		/* Convert times into miliseconds */
 #ifdef STDPTIME
 		ctv = (ctv * 1000) / CLOCKS_PER_SEC;
